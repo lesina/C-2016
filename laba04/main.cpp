@@ -162,7 +162,7 @@ void sortListCenterMass (List *list){
     double cenY = centerMassY(list);
     double cenX = centerMassX(list);
     int t;
-    while(flag == 1){
+    while(flag){
         Node *temp = list->head;
         Node *nextTemp = temp->next;
         flag = 0;
