@@ -50,6 +50,17 @@ void print( List * list )
     cout<<"\n";
 }
 
+void print(List * list, int number) {
+    Node * temp = list->head;  // Временно указываем на адрес первого элемента
+    while( (temp != NULL) && (number > 0))      // Пока не встретим пустое значение
+    {
+        cout << temp->x <<" " << temp->y << endl; //Выводим значение на экран
+        temp = temp->next;     //Смена адреса на адрес следующего элемента
+        number--;
+    }
+    cout<<"\n";
+}
+
 void findFirst (List *list, int check_x, int check_y){
     Node * temp = list->head;
     int i = 1;
@@ -122,9 +133,6 @@ List *criterion( List * list , bool (*func)(int))
     return newList;
 }
 
-/*
- * It doesn't work
- */
 double centerMassX(List *list){
     Node *temp = list->head;
     double sum = 0;
@@ -137,9 +145,6 @@ double centerMassX(List *list){
     return sum/n;
 }
 
-/*
- * It doesn't work
- */
 double centerMassY(List *list){
     Node *temp = list->head;
     double sum = 0;
@@ -152,21 +157,29 @@ double centerMassY(List *list){
     return sum/n;
 }
 
-/*
- * It doesn't work
- */
-void findClose(List *list, int centX, int centY){
-    Node *temp = list->head;
-    int minX = 0;
-    int minY = 0;
-    while (temp != NULL){
-        if ((abs(temp->x - centX) + abs(temp->y - centY)) < (abs(minX-centX) + abs(minY-centY))) {
-            minX = temp->x;
-            minY = temp->y;
+void sortListCenterMass (List *list){
+    bool flag = 1;
+    double cenY = centerMassY(list);
+    double cenX = centerMassX(list);
+    int t;
+    while(flag == 1){
+        Node *temp = list->head;
+        Node *nextTemp = temp->next;
+        flag = 0;
+        while (nextTemp != NULL){
+            if(((temp->x - cenX) + (temp->y - cenY)) > ((nextTemp->x - cenX) + (nextTemp->y - cenY))){
+                t = temp->x;
+                temp->x=nextTemp->x;
+                nextTemp->x=t;
+                t = temp->y;
+                temp->y=nextTemp->y;
+                nextTemp->y=t;
+                flag=1;
+            }
+            temp = temp->next;
+            nextTemp = nextTemp->next;
         }
-        temp = temp->next;
     }
-    cout << minX << " " << minY;
 }
 
 int main(void){
@@ -179,5 +192,7 @@ int main(void){
     }
     List *new_list = criterion(list, evenElementX);
     print(new_list);
+    sortListCenterMass(list);
+    print(list, 5);
     return 0;
 }
