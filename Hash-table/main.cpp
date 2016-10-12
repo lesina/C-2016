@@ -33,10 +33,10 @@ void add( hashTable *table, int x)
     temp->next = NULL;       // Указываем, что изначально по следующему адресу пусто
     temp->x = x;             // Записываем значение в структуру
     int key = myHash(x);
-
-    if ( (table->values[key]).head != NULL ) // Если список не пуст
+    List &current = table->values[key];
+    if ( current.head != NULL ) // Если список не пуст
     {
-        temp->prev = (table->values[key]).tail; // Указываем адрес на предыдущий элемент в соотв. поле
+        temp->prev = current.tail; // Указываем адрес на предыдущий элемент в соотв. поле
         (table->values[key]).tail->next = temp; // Указываем адрес следующего за хвостом элемента
         (table->values[key]).tail = temp;       //Меняем адрес хвоста
     }
@@ -70,6 +70,8 @@ void pop(hashTable *table, int pop_x){
     int index = find(table, pop_x);
     if (index == 0) {
         (table->values[key]).head = temp->next;
+        //Убрать указатель на temp->prev
+        //Удалить temp
     } else {
         for (int i = 1; i < index; i++) {
             temp = temp->next;
@@ -77,6 +79,7 @@ void pop(hashTable *table, int pop_x){
         Node *new_tmp = temp->next->next;
         temp->next = new_tmp;
         new_tmp->prev = temp;
+        //Удалить элемент
     }
 }
 
