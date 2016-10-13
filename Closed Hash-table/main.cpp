@@ -36,6 +36,9 @@ void add( ClosedHashTable *table, int x)
     List &current = table->values[key];
     while (current.head != NULL && current.head->x != 0){
         key++;
+        if (key == N_MAX) {
+            key = 0;
+        }
         current = table->values[key];
     }
     temp->prev = NULL; // Предыдущий элемент указывает в пустоту
@@ -47,14 +50,17 @@ void find(ClosedHashTable *table, int check_x){
     int key = myHash(check_x);
     List &current = table->values[key];
     //Сделаем индикатор нахождения элементов
-    int notFound = 0;
+    int notFound = 1;
     while (current.head != NULL){
         if (current.head->x == check_x){
             cout << "FOUND!" << endl;
-            notFound = 1;
+            notFound = 0;
             break;
         }
         key++;
+        if (key == N_MAX) {
+            key = 0;
+        }
         current = table->values[key];
     }
     if (notFound){
@@ -74,6 +80,9 @@ void pop(ClosedHashTable *table, int pop_x){
             break;
         }
         key++;
+        if (key == N_MAX) {
+            key = 0;
+        }
         current = table->values[key];
     }
 }
