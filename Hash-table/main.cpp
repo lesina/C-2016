@@ -20,7 +20,7 @@ struct List   //Создаем тип данных Список
 };
 
 int myHash(int x){
-    return x % N_MAX;
+    return hash<int>()(x) % N_MAX;
 }
 
 struct hashTable{
