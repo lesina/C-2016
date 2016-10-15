@@ -87,18 +87,28 @@ void findLast (List *list, int check_x, int check_y) {
     }
 }
 
-void addIn (List *list, int index, int X, int Y){
+void addIn (List *list, int index, int X, int Y) {
     Node * temp = list->head;
-    for(int i = 1; i < index; i++){
-        temp = temp->next;
+    for(int i = 1; i <= index; i++){
+        if (temp->next != NULL)
+            temp = temp->next;
+        else
+            break;
     }
     Node * newElem = new Node;
     newElem->x = X;
     newElem->y = Y;
-    temp->prev->next = newElem;
-    newElem->prev = temp->prev;
-    temp->prev = newElem;
-    newElem->next = temp;
+    if (temp->prev != NULL) {
+        temp->prev->next = newElem;
+        newElem->prev = temp->prev;
+        temp->prev = newElem;
+        newElem->next = temp;
+    } else if (temp == list->head) {
+        newElem->next = temp;
+        newElem->prev = temp->prev;
+        temp->prev = newElem;
+        list->head = newElem;
+    }
 }
 
 void popIn(List *list, int index){
@@ -192,7 +202,9 @@ int main(void){
     }
     List *new_list = criterion(list, evenElementX);
     print(new_list);
-    sortListCenterMass(list);
-    print(list, 5);
+    addIn(list, 0, 2, 2);
+    print(list);
+//    sortListCenterMass(list);
+//    print(list, 5);
     return 0;
 }
