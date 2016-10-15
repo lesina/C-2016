@@ -2,25 +2,14 @@
 #include <iostream>
 #include <cmath>
 
+#include "doubleList.h"
+
 const int N_MAX = 10000;
 
 using namespace std;
 
-struct Node       //Структура являющаяся звеном списка
-{
-    int x;//Значение x будет передаваться в список
-    Node *next, *prev; //Указатели на адреса следующего и предыдущего элементов списка
-};
-
-
-struct List   //Создаем тип данных Список
-{
-    Node *head;
-    Node *tail;  //Указатели на адреса начала списка и его конца
-};
-
 int myHash(int x){
-    return hash<int>()(x) % N_MAX;
+    return (int)hash<int>()(x) % N_MAX; //Берётся хэш от x, явно приводится к int
 }
 
 struct hashTable{
@@ -29,58 +18,21 @@ struct hashTable{
 
 void add( hashTable *table, int x)
 {
-    Node *temp = new Node(); // Выделение памяти под новый элемент структуры
-    temp->next = NULL;       // Указываем, что изначально по следующему адресу пусто
-    temp->x = x;             // Записываем значение в структуру
-    int key = myHash(x);
-    List &current = table->values[key];
-    if ( current.head != NULL ) // Если список не пуст
-    {
-        temp->prev = current.tail; // Указываем адрес на предыдущий элемент в соотв. поле
-        current.tail->next = temp; // Указываем адрес следующего за хвостом элемента
-        current.tail = temp;       //Меняем адрес хвоста
-    }
-    else //Если список пустой
-    {
-        temp->prev = NULL; // Предыдущий элемент указывает в пустоту
-        current.head = current.tail = temp;    // Голова=Хвост=тот элемент, что сейчас добавили
-    }
+    List *current = &(table->values[myHash(x)]);
+    add(current, x);
 }
 
 int find(hashTable *table, int check_x){
 
-    int key = myHash(check_x);
-    Node * temp = (table->values[key]).head;
-    int i = -1;
-    if (temp != NULL)
-        i = 0;
-    while (temp != NULL){
-        if ((temp->x == check_x)) {
-            break;
-        }
-        temp = temp->next;
-        i++;
-    }
-    return i;
+    List *current = &(table->values[myHash(check_x)]);
+    find(current, check_x);
 }
 
 void pop(hashTable *table, int pop_x){
-    int key = myHash(pop_x);
-    Node * temp = (table->values[key]).head;
-    int index = find(table, pop_x);
-    if (index == 0) {
-        (table->values[key]).head = temp->next;
-        temp->next->prev = NULL;
-        delete temp;
-    } else {
-        for (int i = 1; i < index; i++) {
-            temp = temp->next;
-        }
-        Node *new_tmp = temp->next->next;
-        temp->next = new_tmp;
-        new_tmp->prev = temp;
-        delete temp;
-    }
+
+    List * current = &(table->values[myHash(pop_x)]);
+    int index = find(current, pop_x);
+    pop(current, index);
 }
 
 int main(void){
@@ -91,7 +43,9 @@ int main(void){
         add(table, x);
     }
     cout << find(table, 1804) << endl;
-    pop(table, 1804);
-    cout << find(table, 1804) << endl;
+    add(table, 2);
+    cout << find(table, 2) << endl;
+    pop(table, 2);
+    cout << find(table, 2) << endl;
     return 0;
 }
