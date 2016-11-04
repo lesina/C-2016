@@ -15,11 +15,9 @@ struct List   //Создаем тип данных Список
 };
 
 void add( List *list, int x );
-void add (List *list, int X, int index);
 void print( List * list );
 void print(List * list, int number);
 int find (List *list, int check_x);
-void pop(List *list);
 void pop(List *list, int index);
 
 #endif

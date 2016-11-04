@@ -61,29 +61,6 @@ int find (List *list, int check_x){
     return i;
 }
 
-void add (List *list, int X, int index) {
-    Node * temp = list->head;
-    for(int i = 1; i <= index; i++){
-        if (temp->next != NULL)
-            temp = temp->next;
-        else
-            break;
-    }
-    Node * newElem = new Node();
-    newElem->x = X;
-    if (temp->prev != NULL) {
-        temp->prev->next = newElem;
-        newElem->prev = temp->prev;
-        temp->prev = newElem;
-        newElem->next = temp;
-    } else if (temp == list->head) {
-        newElem->next = temp;
-        newElem->prev = temp->prev;
-        temp->prev = newElem;
-        list->head = newElem;
-    }
-}
-
 void pop(List *list, int index){
     Node * temp = list->head;
     for(int i = 2; i <= index; i++){
@@ -107,11 +84,4 @@ void pop(List *list, int index){
         temp->prev->next = NULL;
         delete temp;
     }
-}
-
-void pop(List *list) {
-    Node *temp = list->tail;
-    list->tail = temp->prev;
-    temp->prev->next = NULL;
-    delete temp;
 }
