@@ -52,5 +52,6 @@ int main(void){
     cout << find(table, 2) << endl;
     pop(table, 2);
     cout << find(table, 2) << endl;
+    print(table, 1365);
     return 0;
 }
