@@ -25,7 +25,7 @@ void add( hashTable *table, int x)
 int find(hashTable *table, int check_x){
 
     List *current = &(table->values[myHash(check_x)]);
-    find(current, check_x);
+    return find(current, check_x);
 }
 
 void pop(hashTable *table, int pop_x){
@@ -33,6 +33,11 @@ void pop(hashTable *table, int pop_x){
     List * current = &(table->values[myHash(pop_x)]);
     int index = find(current, pop_x);
     pop(current, index);
+}
+
+void print(hashTable *table, int x){
+    List * current = &(table->values[myHash(x)]);
+    print(current);
 }
 
 int main(void){

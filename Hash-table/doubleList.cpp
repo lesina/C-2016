@@ -35,20 +35,9 @@ void print( List * list )
     cout<<"\n";
 }
 
-void print(List * list, int number) {
-    Node * temp = list->head;  // Временно указываем на адрес первого элемента
-    while( (temp != NULL) && (number > 0))      // Пока не встретим пустое значение
-    {
-        cout << temp->x << endl; //Выводим значение на экран
-        temp = temp->next;     //Смена адреса на адрес следующего элемента
-        number--;
-    }
-    cout<<"\n";
-}
-
 int find (List *list, int check_x){
     Node * temp = list->head;
-    int i = -1;
+    int i = -1; //returns -1 if element not found
     if (temp != NULL)
         i = 0;
     while (temp != NULL){
